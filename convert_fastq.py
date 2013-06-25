@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 import sys
 filename = sys.argv[1]
 filetowrite = filename.split(".")[0]+"_sngr"+".fastq"
