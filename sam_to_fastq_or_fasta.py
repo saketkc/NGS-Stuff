@@ -7,11 +7,11 @@ from Bio import SeqIO, Seq, SeqRecord
 def convert_to_fasta(in_file):
     out_file = "%s.fa" % os.path.splitext(in_file)[0]
     with open(out_file, "w") as out_handle:
-       
-        SeqIO.write(bam_to_rec(in_file), out_handle, "fasta")
+
+        SeqIO.write(bam_to_fasta(in_file), out_handle, "fasta")
 
 def bam_to_fasta(in_file):
-    
+
     bam_file = pysam.Samfile(in_file, "rb")
     for read in bam_file:
         seq = Seq.Seq(read.seq)
@@ -21,5 +21,5 @@ def bam_to_fasta(in_file):
         yield rec
 
 if __name__ == "__main__":
-    convert_fasta(*sys.argv[1:])
+    convert_to_fasta(*sys.argv[1:])
 

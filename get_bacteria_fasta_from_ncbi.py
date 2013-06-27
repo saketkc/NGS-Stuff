@@ -16,7 +16,9 @@ for id in project_ids:
     handle = Entrez.elink(dbfrom="bioproject", id=id, linkname="bioproject_nuccore")
     record = Entrez.read(handle)
     handle.close()
-    if record[0]["LinkSetDb"]:
+    print record
+
+    """if record[0]["LinkSetDb"]:
         id_list = record[0]["LinkSetDb"][0]["Link"]
         nuccore_ids = []
         for link in id_list:
@@ -28,6 +30,6 @@ for id in project_ids:
             # Save them all in one fasta file
         all_ids = (".").join(nuccore_ids)
         SeqIO.write(records, outputpath+"bioprojectId:"+str(id) +"-len:"+ str(len(records)) + "-nuccore-ids:" +all_ids +"-sequences.fasta", "fasta")
-
+    """
 
 
