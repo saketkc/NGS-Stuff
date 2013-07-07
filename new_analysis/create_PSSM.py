@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 import sys, re
 from Bio import SeqIO
 import matplotlib.pyplot as plt
@@ -20,7 +21,8 @@ class GetPSSM:
         self.fastq_index = SeqIO.index(self.filelocation, self.fastq_format)
         self.set_casava()
         self.filter_casava()
-        return self.fastq_index
+        self.records = [self.fastq_index[index] for index in self.fastq_index.keys()]
+        return self.records
 
     def guess_read_length(self):
         try:
@@ -91,28 +93,18 @@ class GetPSSM:
         row4  += ("\t").join("%0.3f" % (r/sum_C) for r in row_C)
 
         row5  += ("\t").join(str(r/sum_N) for r in row_N)
-#        row2 += str(motifs_count["TA"])+"\t"+str(motifs_count["TT"])+"\t"+str(motifs_count["TG"])+"\t"+str(motifs_count["TC"])
- #       row3 += str(motifs_count["GA"])+"\t"+str(motifs_count["GT"])+"\t"+str(motifs_count["GG"])+"\t"+str(motifs_count["GC"])
-#        row4 += str(motifs_count["CA"])+"\t"+str(motifs_count["CT"])+"\t"+str(motifs_count["CG"])+"\t"+str(motifs_count["CC"])
         print row0
         print row1
         print row2
         print row3
         print row4
         print row5
-
-
-
-
-
-
-
     def set_casava( self) :
-        key = self.fastq_index.keys()[2]
-        print key
-        print self.fastq_index[key]
-
+        key = self.fastq_index.keys()[1]
+        #print key
+        #print self.fastq_index[key]
         if self.casava_regexp.match(key):
+            print "CASAVA"
             self.is_casava=True
         return True
 
@@ -130,7 +122,8 @@ class GetPSSM:
 
 if __name__=="__main__":
     get_pssm = GetPSSM(sys.argv[1], "fastq")
-    get_pssm.read_in_memory()
+    #get_pssm.read_in_memory()
+    get_pssm.run_index()
     get_pssm.guess_read_length()
     get_pssm.get_read_wise_motif_content()
     read_wise_motif_count = get_pssm.read_wise_motif_count
