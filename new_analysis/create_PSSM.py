@@ -8,7 +8,6 @@ class GetPSSM:
         self.fastq_format = fastq_format
         self.is_casava = False
         self.nucleotides=['A','G','T','C','N']
-
         self.per_base_count = {}
         self.read_wise_motif_count={}
         self.read_wise_motif_count = {}
@@ -19,9 +18,10 @@ class GetPSSM:
 
     def run_index( self ):
         self.fastq_index = SeqIO.index(self.filelocation, self.fastq_format)
-        self.set_casava()
-        self.filter_casava()
+        #self.set_casava()
+        #self.filter_casava()
         self.records = [self.fastq_index[index] for index in self.fastq_index.keys()]
+        print len(self.records)
         return self.records
 
     def guess_read_length(self):
@@ -44,6 +44,7 @@ class GetPSSM:
     def get_read_wise_motif_content( self, per_base_content=True):
         self.per_position_base_content = {i:{n:0 for n in self.nucleotides} for i in range(0,self.read_length)}
         for i,rec in enumerate(self.records):
+            print i
             for pos,nuc in enumerate(rec.seq.tostring()):
                 self.per_position_base_content[pos][nuc]+=1
             if per_base_content:
@@ -99,6 +100,7 @@ class GetPSSM:
         print row3
         print row4
         print row5
+        return True
     def set_casava( self) :
         key = self.fastq_index.keys()[1]
         #print key
@@ -125,6 +127,7 @@ if __name__=="__main__":
     #get_pssm.read_in_memory()
     get_pssm.run_index()
     get_pssm.guess_read_length()
+    print "READ \length done"
     get_pssm.get_read_wise_motif_content()
     read_wise_motif_count = get_pssm.read_wise_motif_count
     get_pssm.create_cpg_matrix()
