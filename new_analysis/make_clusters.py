@@ -3,6 +3,13 @@ import re,sys
 from Bio import SeqIO
 input_fasta = sys.argv[1]
 nucleotides=['A','T','G','C','N']
+dirs=[x[0] for x in os.walk("/data1/Virus_NCBI/")]
+all_files=[]
+directory=""
+for directory in dirs:
+    os.chdir(directory)
+    for files in glob.glob("*.fna"):
+        all_files.append(directory+'/'+files)
 motifs_count = {i+j:0 for i in nucleotides for j in nucleotides}
 for rec in SeqIO.parse(input_fasta,"fasta"):
     for motif in motifs_count.keys():
